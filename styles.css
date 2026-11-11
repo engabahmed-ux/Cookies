@@ -76,3 +76,27 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
  .category-tabs{scrollbar-width:none}
  .category-tabs::-webkit-scrollbar{display:none}
 }
+
+/* A quiet 3D cookie companion drifting along the page edge (desktop only). */
+.wandering-cookie{position:fixed;z-index:8;right:clamp(12px,2.5vw,34px);top:43%;width:42px;height:42px;border-radius:50%;pointer-events:none;opacity:.38;background:radial-gradient(circle at 31% 26%,#f0c58c 0,#ce9255 48%,#99552e 78%,#66351e 100%);box-shadow:inset -5px -7px 9px rgba(64,29,13,.38),inset 4px 4px 7px rgba(255,231,190,.7),0 8px 16px rgba(76,39,18,.18);transform-style:preserve-3d;animation:cookieCompanion 8s ease-in-out infinite;will-change:transform}
+.wandering-cookie:before{content:"";position:absolute;inset:3px;border:1px dashed rgba(255,229,188,.5);border-radius:50%}
+.wander-chip{position:absolute;width:7px;height:5px;border-radius:50%;background:#442417;box-shadow:inset 1px 1px 1px rgba(255,255,255,.2);z-index:2}
+.wander-chip:nth-child(1){left:10px;top:9px;transform:rotate(20deg)}
+.wander-chip:nth-child(2){right:8px;top:15px;transform:rotate(-20deg)}
+.wander-chip:nth-child(3){left:13px;bottom:8px;transform:rotate(-15deg)}
+.wander-chip:nth-child(4){right:11px;bottom:10px;transform:rotate(30deg)}
+.wander-shine{position:absolute;left:8px;top:6px;width:13px;height:7px;border-radius:50%;background:rgba(255,240,207,.48);filter:blur(2px);transform:rotate(-28deg)}
+@keyframes cookieCompanion{0%,100%{transform:translate3d(0,0,0) rotateX(8deg) rotateY(-14deg) rotateZ(-12deg)}25%{transform:translate3d(-10px,-16px,8px) rotateX(-10deg) rotateY(24deg) rotateZ(8deg)}50%{transform:translate3d(-3px,12px,0) rotateX(16deg) rotateY(-22deg) rotateZ(18deg)}75%{transform:translate3d(8px,-9px,5px) rotateX(-8deg) rotateY(16deg) rotateZ(-4deg)}}
+.cookie-flight-layer{position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden}
+.cookie-pop{position:fixed;width:38px;height:38px;border-radius:50%;display:block;background:radial-gradient(circle at 31% 25%,#f0c58c 0,#cf9255 48%,#99552e 79%,#68371e 100%);box-shadow:inset -5px -6px 8px rgba(57,25,10,.4),inset 4px 4px 7px rgba(255,231,190,.65),0 7px 13px rgba(65,33,15,.2);transform-style:preserve-3d}
+.cookie-pop:before{content:"";position:absolute;inset:3px;border:1px dashed rgba(255,229,188,.5);border-radius:50%}
+.cookie-pop i{position:absolute;width:8px;height:6px;border-radius:50%;background:#3d2015;box-shadow:inset 1px 1px 1px rgba(255,255,255,.18)}
+.cookie-pop i:nth-child(1){left:9px;top:8px;transform:rotate(20deg)}
+.cookie-pop i:nth-child(2){right:7px;top:13px;transform:rotate(-20deg)}
+.cookie-pop i:nth-child(3){left:11px;bottom:8px;transform:rotate(-15deg)}
+.cookie-pop i:nth-child(4){right:10px;bottom:9px;transform:rotate(25deg)}
+.cookie-pop b{position:absolute;left:8px;top:5px;width:12px;height:7px;border-radius:50%;background:rgba(255,239,207,.5);filter:blur(2px)}
+.add-button.just-added{animation:addButtonPop .34s cubic-bezier(.2,.8,.25,1)}
+@keyframes addButtonPop{0%{transform:scale(1)}42%{transform:scale(1.045)}100%{transform:scale(1)}}
+@media(max-width:700px){.wandering-cookie{width:30px;height:30px;right:7px;opacity:.24}.wander-chip{transform:scale(.75)}}
+@media(prefers-reduced-motion:reduce){.wandering-cookie{animation:none}.add-button.just-added{animation:none}}
