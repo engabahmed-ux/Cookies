@@ -34,6 +34,29 @@ function renderProducts(){
       <button class="add-button ${qty?"added":""}" data-add="${p.id}" type="button"><span>${qty?"ADDED · "+qty+" SELECTED":"ADD TO YOUR LIST"}</span><span>${qty?"✓":"＋"}</span></button></div></article>`;
   }).join("") : '<div class="no-results">No treats found. Try another search or category.</div>';
 }
+
+/* Small, non-blocking cookie feedback when a menu item is added. */
+function launchCookiePop(sourceButton){
+  const layer = $("#cookieFlightLayer");
+  if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const rect = sourceButton.getBoundingClientRect();
+  const cookie = document.createElement("span");
+  cookie.className = "cookie-pop";
+  cookie.innerHTML = '<i></i><i></i><i></i><i></i><b></b>';
+  const size = 38;
+  cookie.style.left = (rect.left + rect.width / 2 - size / 2) + "px";
+  cookie.style.top = (rect.top + rect.height / 2 - size / 2) + "px";
+  const drift = (Math.random() - .5) * 58;
+  layer.appendChild(cookie);
+  const animation = cookie.animate([
+    { transform: "translate3d(0,0,0) rotate(-12deg) scale(.55)", opacity: 0 },
+    { transform: "translate3d(" + drift * .35 + "px,-34px,0) rotate(105deg) scale(1.12)", opacity: 1, offset: .38 },
+    { transform: "translate3d(" + drift + "px,-76px,0) rotate(205deg) scale(.92)", opacity: .95, offset: .72 },
+    { transform: "translate3d(" + drift * 1.25 + "px,-96px,0) rotate(250deg) scale(.72)", opacity: 0 }
+  ], { duration: 760, easing: "cubic-bezier(.2,.75,.25,1)" });
+  animation.onfinish = () => cookie.remove();
+}
+
 function selectedProducts(){return MENU.filter(p=>state.selection[p.id]>0);}
 function totals(){
   const count=Object.values(state.selection).reduce((sum,n)=>sum+n,0);
@@ -69,6 +92,10 @@ productGrid.addEventListener("click",event=>{
   if(!button)return;
   const id=button.dataset.add;
   state.selection[id]=(state.selection[id]||0)+1;
+  launchCookiePop(button);
+  button.classList.remove("just-added");
+  void button.offsetWidth;
+  button.classList.add("just-added");
   update();
 });
 $("#productSearch").addEventListener("input",event=>{state.query=event.target.value;renderProducts();});
