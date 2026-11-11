@@ -23,7 +23,7 @@ Create a Pages project connected to this GitHub repository. Use:
 Edit the `MENU` array at the top of `app.js`. Each product has:
 `id`, `name`, `category`, `price`, `description`, `tag`, and `art`.
 
-**Important:** The included products and prices are starter/demo content, not confirmed shop pricing. Replace them with the actual menu before publishing for customers.
+The menu currently contains the 84 products and EGP prices supplied for this version. Confirm any future price changes by updating the `MENU` array.
 
 ## Files
 - `index.html` — page structure and content regions
