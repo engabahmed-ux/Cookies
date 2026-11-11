@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7ebe1">
+  <meta name="description" content="Explore the Cookies menu, discover your favourites and calculate your total instantly.">
+  <title>Cookies — A little moment of happiness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Cookies home">
+      <span class="brand-mark">C<span>✳</span></span>
+      <span class="brand-name">cookies<small>BAKED WITH LOVE</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#menu">Our menu</a>
+      <a class="nav-link" href="#story">Our story</a>
+    </nav>
+    <a class="header-cta" href="#menu">Explore menu <span>↗</span></a>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+  </header>
+
+  <main>
+    <section class="hero section-shell" id="home">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="eyebrow-line"></span> FRESHLY MADE, ALWAYS HAPPY</div>
+        <h1>Where you will<br>find your <em>happiness.</em></h1>
+        <p class="hero-description">A little sweetness, a little comfort, and a whole lot of good vibes. Find your new favourite sip or bite.</p>
+        <div class="hero-actions">
+          <a class="button button-dark" href="#menu">Discover the menu <span>↘</span></a>
+          <a class="text-link" href="#story">A taste of our world <span>↗</span></a>
+        </div>
+        <div class="hero-note"><span class="note-star">✳</span><span>GOOD MOOD<br><b>IN EVERY BITE</b></span><span class="note-divider"></span><span>MADE FRESH<br><b>JUST FOR YOU</b></span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a freshly baked chocolate chip cookie">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <span class="floating-word word-top">freshly baked</span>
+        <span class="floating-word word-bottom">made to share ♡</span>
+        <div class="hero-cookie" id="heroCookie">
+          <div class="cookie-edge"></div><div class="cookie-face"></div>
+          <i class="chip chip-a"></i><i class="chip chip-b"></i><i class="chip chip-c"></i><i class="chip chip-d"></i><i class="chip chip-e"></i><i class="chip chip-f"></i><i class="chip chip-g"></i>
+          <span class="cookie-shine"></span>
+        </div>
+        <div class="hero-sticker"><span>BAKED</span><b>WITH<br>LOVE</b><i>✳</i></div>
+        <div class="art-shadow"></div>
+      </div>
+      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-line"></span><span>01 — 04</span></div>
+    </section>
+
+    <section class="ticker" aria-label="Brand message"><div class="ticker-track"><span>GOOD THINGS TAKE A LITTLE SUGAR</span><i>✳</i><span>SIP · SMILE · REPEAT</span><i>✳</i><span>GOOD THINGS TAKE A LITTLE SUGAR</span><i>✳</i><span>SIP · SMILE · REPEAT</span><i>✳</i></div></section>
+
+    <section class="menu-section section-shell" id="menu">
+      <div class="section-heading reveal">
+        <div><div class="eyebrow"><span class="eyebrow-line"></span> THE GOOD STUFF</div><h2>Made for your<br><em>happy place.</em></h2></div>
+        <p>Take your time, explore the flavours, and build your perfect little treat list. Your total updates as you go.</p>
+      </div>
+      <div class="menu-toolbar">
+        <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Menu categories"></div>
+        <label class="search-box"><span>⌕</span><input id="productSearch" type="search" placeholder="Find your favourite..." aria-label="Search menu"></label>
+      </div>
+      <div class="menu-meta"><span id="resultsCount">A FEW LITTLE FAVOURITES</span><span>SELECT TO ADD TO YOUR LIST <b>＋</b></span></div>
+      <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      <div class="menu-footnote"><span>✳</span> Prices shown are sample values and can be replaced with your current menu.</div>
+    </section>
+
+    <section class="story-section" id="story">
+      <div class="story-inner section-shell">
+        <div class="story-art reveal"><div class="story-cookie mini-cookie"><i></i><i></i><i></i><i></i><i></i></div><span class="story-stamp">A LITTLE<br>HAPPINESS<br>GOES A LONG WAY</span></div>
+        <div class="story-copy reveal"><div class="eyebrow"><span class="eyebrow-line"></span> MORE THAN A SWEET TOOTH</div><h2>Small treats.<br><em>Big feelings.</em></h2><p>We believe the best moments are often the simplest: your favourite drink, a warm cookie, and a reason to pause. Welcome to your happy place.</p><a class="text-link" href="#menu">Find your something <span>↗</span></a></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="total-dock" id="totalDock" aria-label="Your selection summary">
+    <div class="dock-left"><span class="dock-icon">✳</span><div><small>YOUR LITTLE LIST</small><b><span id="selectedCount">0</span> items selected</b></div></div>
+    <div class="dock-total"><small>ESTIMATED TOTAL</small><strong><span id="estimatedTotal">0</span> <small>EGP</small></strong></div>
+    <button class="button button-cream" id="openSelection" type="button">View selection <span>↗</span></button>
+  </aside>
+
+  <div class="modal-backdrop" id="selectionBackdrop" hidden>
+    <section class="selection-modal" role="dialog" aria-modal="true" aria-labelledby="selectionTitle">
+      <div class="modal-head"><div><div class="eyebrow">YOUR HAPPY LITTLE LIST</div><h2 id="selectionTitle">Your selection<span>.</span></h2></div><button class="icon-button" id="closeSelection" aria-label="Close selection">×</button></div>
+      <div class="selection-items" id="selectionItems"></div>
+      <div class="empty-selection" id="emptySelection"><span>♡</span><h3>Nothing here just yet.</h3><p>Find something delicious and add it to your list.</p><button class="text-link" id="backToMenu" type="button">Explore the menu ↗</button></div>
+      <div class="modal-footer"><button class="reset-button" id="resetSelection" type="button">↺ Clear selection</button><div class="modal-total"><small>ESTIMATED TOTAL</small><strong><span id="modalTotal">0</span> EGP</strong></div></div>
+      <p class="modal-disclaimer">This is a price calculator only. No order or payment is sent.</p>
+    </section>
+  </div>
+
+  <footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-mark">C<span>✳</span></span><span class="brand-name">cookies<small>BAKED WITH LOVE</small></span></a><p>Where you will find your happiness.</p><span>MADE WITH A LITTLE EXTRA LOVE ✳</span></footer>
+</body>
+</html>
