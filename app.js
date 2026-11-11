@@ -12,27 +12,72 @@ const categoryTabs = $("#categoryTabs");
 const productGrid = $("#productGrid");
 const selectionBackdrop = $("#selectionBackdrop");
 
+
+const CATEGORY_META = {
+  "All":{icon:"✦",hint:"See the full menu"},"Coffee":{icon:"☕",hint:"Hot coffee & tea"},
+  "Milk Way":{icon:"🥛",hint:"Creamy coffee classics"},"Iced Coffee":{icon:"🧊",hint:"Chilled coffee favourites"},
+  "Frappe Coffee":{icon:"🍦",hint:"Blended & frothy"},"Milk Shake":{icon:"🍓",hint:"Thick, creamy shakes"},
+  "Matcha":{icon:"🍵",hint:"Smooth green goodness"},"Tropical Refresher":{icon:"🍹",hint:"Fruity & refreshing"},
+  "Soft Drinks & Juices":{icon:"🍊",hint:"Juices, soda & water"},"Cookies & Dessert":{icon:"🍪",hint:"Freshly baked treats"},
+  "Breakfast & Sandwiches":{icon:"🥯",hint:"Easy morning bites"},"Extras":{icon:"✨",hint:"Little finishing touches"}
+};
 function renderCategories(){
-  categoryTabs.innerHTML = CATEGORIES.map(category => `<button class="category-tab ${state.category===category?"active":""}" role="tab" aria-selected="${state.category===category}" data-category="${category}">${category}</button>`).join("");
+  categoryTabs.innerHTML=CATEGORIES.map(category=>{
+    const count=category==="All"?MENU.length:MENU.filter(p=>p.category===category).length;
+    const meta=CATEGORY_META[category]||{icon:"✦",hint:"Explore this category"};
+    return `<button class="category-card ${state.category===category&&category!=="All"?"active":""}" data-category="${category}" type="button" aria-pressed="${state.category===category}">
+      <span class="category-card-icon" aria-hidden="true">${meta.icon}</span><span class="category-card-copy"><strong>${category==="All"?"Full Menu":category}</strong><small>${meta.hint}</small></span><span class="category-card-count">${count}</span><span class="category-card-arrow" aria-hidden="true">→</span></button>`;
+  }).join("");
 }
-function artMarkup(product){
-  if(product.art==="cookie") return '<div class="product-art cookie-art"><i></i><i></i><i></i><i></i><i></i></div>';
-  const tone = product.art==="matcha"?"matcha":product.art==="berry"?"berry":product.art==="coffee"?"coffee":product.art==="soda"?"soda":"";
-  return `<div class="product-art cup-art ${tone}"><span class="straw"></span></div>`;
+function drinkKind(p){
+  if(p.category==="Cookies & Dessert")return "cookie";
+  if(p.category==="Breakfast & Sandwiches")return "food";
+  if(p.category==="Extras")return "extra";
+  if(p.category==="Coffee")return /tea/i.test(p.name)?"tea":"hot";
+  if(p.category==="Milk Way")return "hot";
+  if(p.category==="Iced Coffee")return "iced";
+  if(p.category==="Frappe Coffee")return "frappe";
+  if(p.category==="Milk Shake")return "shake";
+  if(p.category==="Matcha")return "matcha";
+  if(p.category==="Tropical Refresher")return "refresher";
+  if(p.category==="Soft Drinks & Juices")return /water/i.test(p.name)?"water":/redbull/i.test(p.name)?"can":"juice";
+  return "cup";
+}
+function drinkTone(p){
+  const n=p.name.toLowerCase();
+  if(/strawberry|red velvet/.test(n))return "strawberry";
+  if(/mango|passion|pina colada|orange/.test(n))return "mango";
+  if(/blueberry|mixed berry|berry/.test(n))return "berry";
+  if(/matcha/.test(n))return "green";
+  if(/pistachio/.test(n))return "pistachio";
+  if(/chocolate|mocha|oreo|nutella|cocoa/.test(n))return "chocolate";
+  if(/caramel|toffee|brulee|lotus|speculoos/.test(n))return "caramel";
+  if(/coconut/.test(n))return "coconut";
+  if(/lemon|mint|watermelon/.test(n))return "citrus";
+  return "classic";
+}
+function artMarkup(p){
+  const kind=drinkKind(p),tone=drinkTone(p);
+  if(kind==="cookie")return '<div class="product-art cookie-art"><i></i><i></i><i></i><i></i><i></i></div>';
+  if(kind==="food")return `<div class="product-art food-art ${tone}"><span></span><i></i><b></b></div>`;
+  if(kind==="extra")return '<div class="product-art extra-art"><span></span><i></i></div>';
+  return `<div class="product-art drink-art ${kind} ${tone}" aria-hidden="true"><span class="drink-straw"></span><span class="drink-liquid"></span><span class="drink-ice ice-one"></span><span class="drink-ice ice-two"></span><span class="drink-foam"></span><span class="drink-garnish"></span><span class="drink-label"></span></div>`;
 }
 function renderProducts(){
   const query=state.query.trim().toLowerCase();
   const filtered=MENU.filter(p=>(state.category==="All"||p.category===state.category)&&(!query||[p.name,p.category,p.description].join(" ").toLowerCase().includes(query)));
-  $("#resultsCount").textContent = `${filtered.length} LITTLE FAVOURITE${filtered.length===1?"":"S"} TO DISCOVER`;
-  productGrid.innerHTML = filtered.length ? filtered.map(p=>{
+  if(state.category==="All"&&!query){
+    $("#resultsCount").textContent="PICK A CATEGORY TO SEE ITS MENU";
+    productGrid.innerHTML='<div class="menu-prompt"><span>☕</span><strong>Your next favourite is one tap away.</strong><small>Choose a menu above and we’ll take you straight to its treats.</small></div>';
+    return;
+  }
+  $("#resultsCount").textContent=`${filtered.length} LITTLE FAVOURITE${filtered.length===1?"":"S"} TO DISCOVER`;
+  productGrid.innerHTML=filtered.length?filtered.map(p=>{
     const qty=state.selection[p.id]||0;
-    return `<article class="product-card">
-      <div class="product-visual"><span class="product-tag">${p.tag}</span>${artMarkup(p)}</div>
-      <div class="product-info"><div class="product-category">${p.category.toUpperCase()}</div>
-      <div class="product-title-row"><h3 class="product-title">${p.name}</h3><span class="product-price">${money(p.price)} EGP</span></div>
-      <p class="product-description">${p.description}</p>
-      <button class="add-button ${qty?"added":""}" data-add="${p.id}" type="button"><span>${qty?"ADDED · "+qty+" SELECTED":"ADD TO YOUR LIST"}</span><span>${qty?"✓":"＋"}</span></button></div></article>`;
-  }).join("") : '<div class="no-results">No treats found. Try another search or category.</div>';
+    return `<article class="product-card"><div class="product-visual"><span class="product-tag">${p.tag}</span>${artMarkup(p)}</div>
+      <div class="product-info"><div class="product-category">${p.category.toUpperCase()}</div><div class="product-title-row"><h3 class="product-title">${p.name}</h3><span class="product-price">${money(p.price)} EGP</span></div>
+      <p class="product-description">${p.description}</p><button class="add-button ${qty?"added":""}" data-add="${p.id}" type="button"><span>${qty?"ADDED · "+qty+" SELECTED":"ADD TO YOUR LIST"}</span><span>${qty?"✓":"＋"}</span></button></div></article>`;
+  }).join(""):'<div class="no-results">No treats found. Try another search or category.</div>';
 }
 
 /* Small, non-blocking cookie feedback when a menu item is added. */
@@ -86,6 +131,7 @@ categoryTabs.addEventListener("click",event=>{
   if(!button)return;
   state.category=button.dataset.category;
   renderCategories();renderProducts();
+  $("#productGrid").scrollIntoView({behavior:"smooth",block:"start"});
 });
 productGrid.addEventListener("click",event=>{
   const button=event.target.closest("[data-add]");
@@ -98,7 +144,7 @@ productGrid.addEventListener("click",event=>{
   button.classList.add("just-added");
   update();
 });
-$("#productSearch").addEventListener("input",event=>{state.query=event.target.value;renderProducts();});
+$("#productSearch").addEventListener("input",event=>{state.query=event.target.value;state.category="All";renderCategories();renderProducts();if(state.query.trim())$("#productGrid").scrollIntoView({behavior:"smooth",block:"start"});});
 function openSelection(){selectionBackdrop.hidden=false;document.body.style.overflow="hidden";$("#closeSelection").focus();}
 function closeSelection(){selectionBackdrop.hidden=true;document.body.style.overflow="";}
 $("#openSelection").addEventListener("click",openSelection);
@@ -136,5 +182,22 @@ if(heroArt&&window.matchMedia("(pointer:fine)").matches){
   });
   heroArt.addEventListener("pointerleave",()=>{heroCookie.style.removeProperty("--pointer-x");heroCookie.style.removeProperty("--pointer-y");heroCookie.style.removeProperty("--pointer-rotate");});
 }
+
+const wanderingCookie=$("#wanderingCookie");
+const finePointer=window.matchMedia("(pointer:fine) and (hover:hover)");
+const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+if(wanderingCookie&&finePointer.matches&&!reducedMotion.matches){
+  let frame=0,x=0,y=0;
+  window.addEventListener("pointermove",event=>{
+    x=event.clientX/window.innerWidth-.5;y=event.clientY/window.innerHeight-.5;
+    if(frame)return;
+    frame=requestAnimationFrame(()=>{
+      wanderingCookie.style.setProperty("--mouse-x",(x*10).toFixed(2)+"px");
+      wanderingCookie.style.setProperty("--mouse-y",(y*10).toFixed(2)+"px");
+      wanderingCookie.style.setProperty("--mouse-tilt",(x*5).toFixed(2)+"deg");frame=0;
+    });
+  },{passive:true});
+}
+
 renderCategories();
 update();
