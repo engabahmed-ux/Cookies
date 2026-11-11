@@ -14,7 +14,7 @@
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
-  <div class="wandering-cookie" aria-hidden="true"><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-shine"></span></div>
+  <div class="wandering-cookie" id="wanderingCookie" aria-hidden="true"><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-chip"></span><span class="wander-shine"></span></div>
   <div class="cookie-flight-layer" id="cookieFlightLayer" aria-hidden="true"></div>
   <header class="site-header">
     <a class="brand" href="#home" aria-label="Cookies home">
@@ -65,7 +65,7 @@
         <p>Take your time, explore the flavours, and build your perfect little treat list. Your total updates as you go.</p>
       </div>
       <div class="menu-toolbar">
-        <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Menu categories"></div>
+        <div class="category-tabs" id="categoryTabs" role="group" aria-label="Choose a menu category"></div>
         <label class="search-box"><span>⌕</span><input id="productSearch" type="search" placeholder="Find your favourite..." aria-label="Search menu"></label>
       </div>
       <div class="menu-meta"><span id="resultsCount">A FEW LITTLE FAVOURITES</span><span>SELECT TO ADD TO YOUR LIST <b>＋</b></span></div>
