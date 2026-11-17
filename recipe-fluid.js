@@ -27,7 +27,6 @@
     const sources={
       coffee:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Espresso_machine.ogg",
       blend:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_blender.webm",
-      whisk:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_sounds_recorded_while_cooking.ogg",
     };
     let enabled=true,current=null;
     const stop=()=>{if(current){current.pause();current.currentTime=0;current=null;}};
