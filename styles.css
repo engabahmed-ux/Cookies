@@ -278,3 +278,14 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 @keyframes fruitDrop{0%{opacity:0;transform:translateY(-24px) scale(.7)}60%{opacity:1}100%{opacity:.9;transform:translateY(24px) scale(1)}}
 @keyframes cupSettle{0%{transform:translateX(-50%) translateY(-9px)}100%{transform:translateX(-50%) translateY(0)}}
 @media(prefers-reduced-motion:reduce){.scene-steam:before,.scene-steam:after,.scene-tool span,.scene-blend .scene-cup,.scene-fruit-bits,.scene-fruit .scene-cup{animation:none!important}}
+
+
+/* Canvas fluid simulation layer: the glass is drawn as one continuous vessel and filled cumulatively. */
+.recipe-scene.fluid-active{isolation:isolate;overflow:hidden}
+.recipe-scene.fluid-active .scene-cup{visibility:hidden}
+.recipe-scene .fluid-canvas{position:absolute;inset:0;z-index:7;display:block;width:100%;height:100%;pointer-events:none}
+.recipe-scene .scene-stage-label{z-index:12}
+.recipe-scene-controls .fluid-sound-toggle{margin-left:0;border:1px solid #e8d2be;border-radius:99px;background:#fffaf5;color:#714628;padding:6px 11px;font:inherit;letter-spacing:0;cursor:pointer;touch-action:manipulation}
+.recipe-scene-controls .fluid-sound-toggle[aria-pressed="false"]{opacity:.58;background:#f0e8df}
+@media(max-width:620px){.recipe-scene-controls{gap:5px;flex-wrap:wrap}.recipe-scene-controls button{padding:7px 10px}}
+@media(prefers-reduced-motion:reduce){.recipe-scene .fluid-canvas{opacity:1}}
