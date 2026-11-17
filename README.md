@@ -36,6 +36,5 @@ The menu currently contains the 84 products and EGP prices supplied for this ver
 Only recordings that fit the action are played; generic water-pouring and glass-clink recordings were removed because they did not accurately represent the ingredients. Current recorded sources:
 - Espresso machine — Hugh, public domain: https://commons.wikimedia.org/wiki/File:Espresso_machine.ogg
 - Kitchen blender — recording by Helena Törnqvist, uploaded by Erik Pålsson, CC BY 4.0: https://commons.wikimedia.org/wiki/File:Kitchen_blender.webm
-- Kitchen preparation ambience — Akum20, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Kitchen_sounds_recorded_while_cooking.ogg
 
 Audio is stopped when the preparation stage changes so it cannot continue over the next action. Ingredients without a suitable dedicated recording remain silent rather than using a misleading sound.
