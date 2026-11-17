@@ -140,3 +140,26 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .product-visual:has(.product-photo){overflow:hidden;background:#f4a05d}
 .product-visual:has(.product-photo) .product-tag{z-index:2;box-shadow:0 4px 12px rgba(70,30,10,.16)}
 @media(prefers-reduced-motion:reduce){.product-photo{transition:none}}
+
+.recipe-button{display:flex;justify-content:space-between;align-items:center;width:100%;margin:0 0 9px;padding:10px 13px;border:1px solid rgba(74,46,27,.2);border-radius:999px;background:#fff9f3;color:#70401f;font:inherit;font-size:10px;font-weight:800;letter-spacing:.1em;cursor:pointer;transition:background .2s,transform .2s}
+.recipe-button:hover{background:#f9e5d3;transform:translateY(-1px)}
+.recipe-backdrop{position:fixed;inset:0;z-index:120;background:rgba(35,24,17,.64);backdrop-filter:blur(8px);display:grid;place-items:center;padding:16px;overflow-y:auto}
+.recipe-backdrop[hidden]{display:none}.recipe-modal{width:min(780px,100%);max-height:92vh;overflow:auto;background:#fffaf5;border-radius:26px;box-shadow:0 28px 90px rgba(30,16,7,.35);color:#4a2e1b;animation:recipeEnter .3s ease both}
+@keyframes recipeEnter{from{opacity:0;transform:translateY(15px) scale(.985)}to{opacity:1;transform:none}}
+.recipe-modal-head{display:flex;justify-content:space-between;gap:14px;padding:25px 28px 17px;background:radial-gradient(circle at 90% 5%,rgba(255,207,153,.55),transparent 38%),#f9e8d9;border-bottom:1px solid #eed8c5}
+.recipe-modal-head h2{margin:8px 0 0;font:500 clamp(28px,5vw,40px) Georgia,serif}.recipe-modal-head h2 span{color:#d4833d}
+.recipe-category{display:inline-block;margin-top:12px;padding:5px 10px;border-radius:99px;background:#fff8f0;color:#95603b;font-size:10px;font-weight:800;text-transform:uppercase}
+.recipe-content{padding:21px 28px 9px}.recipe-overview{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:17px;background:#fff1e4}
+.recipe-cup{display:grid;place-items:center;flex:0 0 54px;height:54px;border-radius:16px;background:#f6d3b2;font-size:28px}
+.recipe-overview strong{font:600 21px Georgia,serif}.recipe-overview p{margin:5px 0 0;color:#97785f;font-size:11px;line-height:1.6}
+.recipe-columns{display:grid;grid-template-columns:.9fr 1.1fr;gap:23px;margin-top:23px}.recipe-columns h3{margin:0 0 13px;font-size:14px}
+.recipe-ingredients{padding:16px;border:1px solid #f0dfd0;border-radius:17px;background:#fffdfb}.recipe-ingredients ul{list-style:none;margin:0;padding:0}
+.recipe-ingredients li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f2e8df;font-size:12px;line-height:1.5}.recipe-ingredients li:last-child{border:0}.recipe-ingredients li b{flex-shrink:0;color:#9a633b;font-size:11px}
+.recipe-timeline{list-style:none;margin:0;padding:0;display:grid;gap:15px}.recipe-timeline li{position:relative;display:grid;grid-template-columns:30px 1fr;gap:11px}
+.recipe-timeline li:not(:last-child):after{content:"";position:absolute;left:14px;top:30px;bottom:-16px;width:2px;background:linear-gradient(#d4833d,#f0dfd0)}
+.recipe-step-number{position:relative;z-index:1;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#4a2e1b;color:#fff8f0;font-size:12px;font-weight:800;box-shadow:0 0 0 4px #f8e7d8}
+.recipe-timeline strong{display:block;margin:2px 0 4px;font-size:13px}.recipe-timeline p{margin:0;color:#92775f;font-size:12px;line-height:1.7}
+.recipe-disclaimer{margin:20px 0 0;padding:11px 13px;border-radius:11px;background:#f8eee5;color:#9a806b;font-size:10px;line-height:1.6}
+.recipe-footer{display:flex;justify-content:flex-end;padding:14px 28px 23px}.recipe-footer .button{border:0;cursor:pointer}
+@media(max-width:620px){.recipe-backdrop{padding:8px;align-items:end}.recipe-modal{max-height:95vh;border-radius:22px}.recipe-modal-head{padding:20px 18px 14px}.recipe-content{padding:16px 17px 8px}.recipe-columns{grid-template-columns:1fr;gap:18px}.recipe-footer{padding:12px 17px 19px}.recipe-footer .button{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.recipe-modal{animation:none}.recipe-button{transition:none}}
