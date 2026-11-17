@@ -289,3 +289,12 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .recipe-scene-controls .fluid-sound-toggle[aria-pressed="false"]{opacity:.58;background:#f0e8df}
 @media(max-width:620px){.recipe-scene-controls{gap:5px;flex-wrap:wrap}.recipe-scene-controls button{padding:7px 10px}}
 @media(prefers-reduced-motion:reduce){.recipe-scene .fluid-canvas{opacity:1}}
+
+.recipe-scene.fluid-active>.scene-countertop,
+.recipe-scene.fluid-active>.scene-glow,
+.recipe-scene.fluid-active>.scene-steam,
+.recipe-scene.fluid-active>.scene-tool,
+.recipe-scene.fluid-active>.scene-pour-stream,
+.recipe-scene.fluid-active>.scene-pour-drop,
+.recipe-scene.fluid-active>.scene-splash,
+.recipe-scene.fluid-active>.scene-fruit-bits{display:none}
