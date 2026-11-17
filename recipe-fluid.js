@@ -84,8 +84,9 @@
       ctx.save();roundedCupPath();ctx.clip();
       const layerCount=Math.max(1,Math.min(plan.length,Math.ceil(level*total)));
       for(let i=0;i<layerCount;i++){
-        const item=stages[i],lower=surfaceY((i+1)/total),upper=surfaceY(i/total);
-        const bottom=Math.min(b,lower+2),top=Math.max(y,upper);
+        const item=stages[i],segmentBottom=surfaceY(i/total);
+        const segmentTop=i===stageIndex?y:surfaceY((i+1)/total);
+        const top=Math.max(cup.top,segmentTop),bottom=Math.min(b,segmentBottom);
         if(bottom<=top)continue;
         const grad=ctx.createLinearGradient(0,top,0,bottom);grad.addColorStop(0,item.top);grad.addColorStop(1,item.bottom);
         ctx.fillStyle=grad;ctx.fillRect(x-hw,top,hw*2,bottom-top+2);
@@ -138,8 +139,6 @@
       else{drawParticles(1/60);const label=host.querySelector(".scene-stage-label.label-three");if(label)label.textContent="READY TO ENJOY";}
     }
     const replay=()=>{cancelAnimationFrame(raf);start=0;lastStage=-1;particles.length=0;ctx.clearRect(0,0,w,h);raf=requestAnimationFrame(frame);};
-    const replayButton=host.querySelector("#replayRecipeScene");
-    replayButton?.addEventListener("click",replay);
     const sound=document.createElement("button");sound.type="button";sound.className="fluid-sound-toggle";sound.textContent="♫ Sound on";sound.setAttribute("aria-pressed","true");
     sound.addEventListener("click",()=>{const on=audio.toggle();sound.textContent=on?"♫ Sound on":"♫ Sound off";sound.setAttribute("aria-pressed",String(on));if(on)audio.play("pour");});
     host.querySelector(".recipe-scene-controls")?.appendChild(sound);
