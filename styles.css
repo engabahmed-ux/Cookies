@@ -189,8 +189,8 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .scene-cup-rim{position:absolute;z-index:8;left:2px;right:2px;top:5px;height:12px;border:3px solid rgba(255,255,255,.94);border-radius:50%;background:rgba(255,255,255,.18);box-shadow:0 3px 5px rgba(77,49,29,.12)}
 .scene-liquid{position:absolute;z-index:2;left:13px;right:13px;bottom:9px;height:0;opacity:.96;border-radius:3px 3px 22px 22px;clip-path:polygon(0 0,100% 0,84% 100%,16% 100%);transform:translateZ(2px)}
 .scene-liquid-one{background:linear-gradient(90deg,var(--liquid-a),var(--liquid-b) 50%,var(--liquid-a));animation:sceneFillOne 1.1s .25s cubic-bezier(.2,.75,.25,1) forwards}
-.scene-liquid-two{background:linear-gradient(90deg,var(--liquid-c),#fff8e8 48%,var(--liquid-b));animation:sceneFillTwo 1.05s 1.25s cubic-bezier(.2,.75,.25,1) forwards}
-.scene-liquid-three{background:linear-gradient(90deg,var(--liquid-b),var(--liquid-a) 52%,var(--liquid-b));animation:sceneFillThree .85s 2.25s cubic-bezier(.2,.75,.25,1) forwards}
+.scene-liquid-two{bottom:57px;background:linear-gradient(90deg,var(--liquid-c),#fff8e8 48%,var(--liquid-b));animation:sceneFillTwo 1.05s 1.25s cubic-bezier(.2,.75,.25,1) forwards}
+.scene-liquid-three{bottom:99px;background:linear-gradient(90deg,var(--liquid-b),var(--liquid-a) 52%,var(--liquid-b));animation:sceneFillThree .85s 2.25s cubic-bezier(.2,.75,.25,1) forwards}
 .scene-pour-stream{position:absolute;z-index:5;left:calc(50% - 3px);top:17px;width:6px;height:0;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.2),var(--scene-accent),rgba(255,255,255,.65));filter:drop-shadow(0 0 4px rgba(205,139,79,.45));animation:scenePour .75s .35s ease-in forwards}
 .scene-pour-drop{position:absolute;z-index:6;left:calc(50% - 5px);top:calc(100% - 194px);width:10px;height:15px;border-radius:60% 60% 70% 70%;background:var(--scene-accent);opacity:0;animation:sceneDrop .7s .85s ease-in forwards}
 .scene-ice{position:absolute;z-index:7;left:26px;right:26px;bottom:17px;height:85px;opacity:0;animation:sceneIce .6s 1.9s ease-out forwards}
