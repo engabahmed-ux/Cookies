@@ -174,16 +174,84 @@ function renderTotals(){
 
 let activeRecipeId=null;
 function escapeRecipeText(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function recipeSceneType(p){
+ const n=p.name.toLowerCase(),c=p.category;
+ if(c==="Matcha")return "matcha";
+ if(c==="Frappe Coffee")return "frappe";
+ if(c==="Milk Shake")return "shake";
+ if(c==="Tropical Refresher")return "refresher";
+ if(c==="Soft Drinks & Juices")return n==="redbull"?"can":n==="water"?"water":"juice";
+ if(c==="Iced Coffee")return "iced";
+ if(c==="Coffee")return n.includes("tea")?"tea":"hot";
+ return "hot";
+}
+function recipeSceneMarkup(p){
+ const type=recipeSceneType(p),n=p.name.toLowerCase();
+ let tone="coffee";
+ if(n.includes("matcha"))tone="matcha";
+ else if(n.includes("strawberry"))tone="strawberry";
+ else if(n.includes("blueberry")||n.includes("berry"))tone="berry";
+ else if(n.includes("mango")||n.includes("passion"))tone="mango";
+ else if(n.includes("pistachio"))tone="pistachio";
+ else if(n.includes("chocolate")||n.includes("mocha")||n.includes("nutella"))tone="chocolate";
+ else if(n.includes("caramel")||n.includes("toffee"))tone="caramel";
+ else if(n.includes("coconut")||n.includes("pina"))tone="coconut";
+ else if(n.includes("lemon")||n.includes("orange"))tone="citrus";
+ else if(n.includes("watermelon"))tone="watermelon";
+ return '<section class="recipe-scene-wrap" aria-label="Animated drink preparation"><div class="recipe-scene-copy"><span class="scene-kicker">MADE FRESH, JUST FOR YOU</span><strong>Watch your drink come to life</strong><small>Ingredients pour in and build the finished drink.</small></div><div class="recipe-scene scene-'+type+' tone-'+tone+'" id="recipeScene"><div class="scene-countertop"></div><div class="scene-glow"></div><div class="scene-pour-stream"></div><div class="scene-pour-drop"></div><div class="scene-cup"><div class="scene-cup-rim"></div><div class="scene-liquid scene-liquid-one"></div><div class="scene-liquid scene-liquid-two"></div><div class="scene-liquid scene-liquid-three"></div><div class="scene-ice"><i></i><i></i><i></i></div><div class="scene-topping"></div><div class="scene-straw"></div><div class="scene-cup-shine"></div><div class="scene-cup-base"></div></div><div class="scene-splash splash-one"></div><div class="scene-splash splash-two"></div><span class="scene-stage-label label-one">01 · BASE</span><span class="scene-stage-label label-two">02 · POUR</span><span class="scene-stage-label label-three">03 · FINISH</span></div><div class="recipe-scene-controls"><span class="scene-live-dot"></span><span>PREPARATION ANIMATION</span><button type="button" id="replayRecipeScene">↻ Replay</button></div></section>';
+}
+function replayRecipeScene(){
+ const scene=$("#recipeScene");if(!scene)return;
+ scene.classList.remove("is-playing");void scene.offsetWidth;scene.classList.add("is-playing");
+}
+
+
+function recipeSceneType(p){
+ const n=p.name.toLowerCase(),c=p.category;
+ if(c==="Matcha")return "matcha";
+ if(c==="Frappe Coffee")return "frappe";
+ if(c==="Milk Shake")return "shake";
+ if(c==="Tropical Refresher")return "refresher";
+ if(c==="Soft Drinks & Juices")return n==="redbull"?"can":n==="water"?"water":"juice";
+ if(c==="Iced Coffee")return "iced";
+ if(c==="Coffee")return n.includes("tea")?"tea":"hot";
+ return "hot";
+}
+function recipeSceneMarkup(p){
+ const type=recipeSceneType(p),n=p.name.toLowerCase();
+ let tone="coffee";
+ if(n.includes("matcha"))tone="matcha";
+ else if(n.includes("strawberry"))tone="strawberry";
+ else if(n.includes("blueberry")||n.includes("berry"))tone="berry";
+ else if(n.includes("mango")||n.includes("passion"))tone="mango";
+ else if(n.includes("pistachio"))tone="pistachio";
+ else if(n.includes("chocolate")||n.includes("mocha")||n.includes("nutella"))tone="chocolate";
+ else if(n.includes("caramel")||n.includes("toffee"))tone="caramel";
+ else if(n.includes("coconut")||n.includes("pina"))tone="coconut";
+ else if(n.includes("lemon")||n.includes("orange"))tone="citrus";
+ else if(n.includes("watermelon"))tone="watermelon";
+ return '<section class="recipe-scene-wrap" aria-label="Animated drink preparation"><div class="recipe-scene-copy"><span class="scene-kicker">MADE FRESH, JUST FOR YOU</span><strong>Watch your drink come to life</strong><small>Ingredients pour in and build the finished drink.</small></div><div class="recipe-scene scene-'+type+' tone-'+tone+'" id="recipeScene"><div class="scene-countertop"></div><div class="scene-glow"></div><div class="scene-pour-stream"></div><div class="scene-pour-drop"></div><div class="scene-cup"><div class="scene-cup-rim"></div><div class="scene-liquid scene-liquid-one"></div><div class="scene-liquid scene-liquid-two"></div><div class="scene-liquid scene-liquid-three"></div><div class="scene-ice"><i></i><i></i><i></i></div><div class="scene-topping"></div><div class="scene-straw"></div><div class="scene-cup-shine"></div><div class="scene-cup-base"></div></div><div class="scene-splash splash-one"></div><div class="scene-splash splash-two"></div><span class="scene-stage-label label-one">01 · BASE</span><span class="scene-stage-label label-two">02 · POUR</span><span class="scene-stage-label label-three">03 · FINISH</span></div><div class="recipe-scene-controls"><span class="scene-live-dot"></span><span>PREPARATION ANIMATION</span><button type="button" id="replayRecipeScene">↻ Replay</button></div></section>';
+}
+function replayRecipeScene(){
+ const scene=$("#recipeScene");if(!scene)return;
+ scene.classList.remove("is-playing");void scene.offsetWidth;scene.classList.add("is-playing");
+}
+
 function openRecipe(id){
  const r=window.RECIPE_CATALOG?.[id];if(!r)return;activeRecipeId=id;
+ const product=MENU.find(x=>x.id===id);document.querySelector(".recipe-scene-wrap")?.remove();
  $("#recipeCategory").textContent=r.category;$("#recipeDrinkName").textContent=r.name;$("#recipeNote").textContent=r.note;
  $("#recipeIngredients").innerHTML=r.ingredients.map(x=>'<li><span>'+escapeRecipeText(x.name)+'</span><b>'+escapeRecipeText(x.amount)+'</b></li>').join("");
  $("#recipeSteps").innerHTML=r.steps.map((x,i)=>'<li><span class="recipe-step-number">'+(i+1)+'</span><div><strong>'+escapeRecipeText(x.title)+'</strong><p>'+escapeRecipeText(x.detail)+'</p></div></li>').join("");
- const p=MENU.find(x=>x.id===id);$("#recipeCup").textContent=p?.art==="matcha"?"🍵":p?.art==="berry"?"🍓":p?.art==="soda"?"🍹":p?.art==="coffee"?"☕":"🥤";
- $("#recipeBackdrop").hidden=false;document.body.style.overflow="hidden";$("#closeRecipe").focus();
+ const p=product;$("#recipeCup").textContent=p?.art==="matcha"?"🍵":p?.art==="berry"?"🍓":p?.art==="soda"?"🍹":p?.art==="coffee"?"☕":"🥤";
+ document.querySelector(".recipe-overview").insertAdjacentHTML("afterend",recipeSceneMarkup(p));
+ $("#recipeBackdrop").hidden=false;requestAnimationFrame(()=>replayRecipeScene());document.body.style.overflow="hidden";$("#closeRecipe").focus();
 }
 function closeRecipe(){ $("#recipeBackdrop").hidden=true;if(selectionBackdrop.hidden)document.body.style.overflow="";activeRecipeId=null; }
 $("#closeRecipe").addEventListener("click",closeRecipe);
+$("#recipeBackdrop").addEventListener("click",event=>{if(event.target.closest("#replayRecipeScene"))replayRecipeScene();});
+$("#recipeBackdrop").addEventListener("click",event=>{if(event.target.closest("#replayRecipeScene"))replayRecipeScene();});
 $("#recipeBackdrop").addEventListener("click",e=>{if(e.target.id==="recipeBackdrop")closeRecipe();});
 $("#recipeAddButton").addEventListener("click",()=>{if(!activeRecipeId)return;state.selection[activeRecipeId]=(state.selection[activeRecipeId]||0)+1;closeRecipe();update();});
 
