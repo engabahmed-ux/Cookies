@@ -29,16 +29,13 @@ The menu currently contains the 84 products and EGP prices supplied for this ver
 - `index.html` — page structure and content regions
 - `styles.css` — visual system, responsive layout, and animations
 - `app.js` — menu data, filters, selection state, and calculator
+- `recipe-fluid.js` — drink preparation animation and audio playback
 
+## Recipe preparation audio credits
 
-## Recipe preparation sound credits
-
-The recipe animation uses recorded sound effects loaded on demand from Wikimedia Commons:
+Only recordings that fit the action are played; generic water-pouring and glass-clink recordings were removed because they did not accurately represent the ingredients. Current recorded sources:
 - Espresso machine — Hugh, public domain: https://commons.wikimedia.org/wiki/File:Espresso_machine.ogg
-- Pouring/drinking water — ezwa, public domain: https://commons.wikimedia.org/wiki/File:Drinking_a_glass_of_wat.ogg
-- Flowing and pouring water — Stephan, public domain: https://commons.wikimedia.org/wiki/File:Water_flowing_pouring_trickling.ogg
-- Glass clink — Hugh, public domain: https://commons.wikimedia.org/wiki/File:Binging_glass.ogg
 - Kitchen blender — recording by Helena Törnqvist, uploaded by Erik Pålsson, CC BY 4.0: https://commons.wikimedia.org/wiki/File:Kitchen_blender.webm
 - Kitchen preparation ambience — Akum20, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Kitchen_sounds_recorded_while_cooking.ogg
 
-The blender recording is attributed to its credited creator and shared under its stated license. The sound controls remain user-toggleable. Some liquid categories reuse real recorded liquid-pour Foley with different playback rates where a dedicated recording is not available.
+Audio is stopped when the preparation stage changes so it cannot continue over the next action. Ingredients without a suitable dedicated recording remain silent rather than using a misleading sound.
