@@ -163,3 +163,67 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .recipe-footer{display:flex;justify-content:flex-end;padding:14px 28px 23px}.recipe-footer .button{border:0;cursor:pointer}
 @media(max-width:620px){.recipe-backdrop{padding:8px;align-items:end}.recipe-modal{max-height:95vh;border-radius:22px}.recipe-modal-head{padding:20px 18px 14px}.recipe-content{padding:16px 17px 8px}.recipe-columns{grid-template-columns:1fr;gap:18px}.recipe-footer{padding:12px 17px 19px}.recipe-footer .button{width:100%;justify-content:center}}
 @media(prefers-reduced-motion:reduce){.recipe-modal{animation:none}.recipe-button{transition:none}}
+
+
+/* Animated drink-making scene: layered CSS glass, liquid pours and category-specific finishes. */
+.recipe-scene-wrap{margin:20px 0 5px;padding:18px 18px 12px;border:1px solid #f0dfd0;border-radius:20px;background:linear-gradient(145deg,#fff8f0,#f8e8d9);overflow:hidden}
+.recipe-scene-copy{display:flex;flex-direction:column;gap:5px;text-align:center}
+.scene-kicker{font-size:9px;letter-spacing:.18em;font-weight:900;color:#bd7744}
+.recipe-scene-copy strong{font:600 21px Georgia,serif;color:#4a2e1b}
+.recipe-scene-copy small{font-size:11px;color:#987b63}
+.recipe-scene{--liquid-a:#63351f;--liquid-b:#c58a5c;--liquid-c:#f0dfc8;--scene-accent:#c58a5c;position:relative;height:248px;max-width:520px;margin:10px auto 0;isolation:isolate;perspective:700px;overflow:hidden;border-radius:16px}
+.recipe-scene.tone-matcha{--liquid-a:#597a42;--liquid-b:#a8bd7a;--liquid-c:#f0ead9;--scene-accent:#7d9856}
+.recipe-scene.tone-strawberry{--liquid-a:#c84f67;--liquid-b:#f2a0a5;--liquid-c:#fff0e7;--scene-accent:#d65c75}
+.recipe-scene.tone-berry{--liquid-a:#694078;--liquid-b:#b66c9b;--liquid-c:#f3d9e8;--scene-accent:#8b5895}
+.recipe-scene.tone-mango{--liquid-a:#e58a27;--liquid-b:#ffc85d;--liquid-c:#fff0bd;--scene-accent:#eea23e}
+.recipe-scene.tone-pistachio{--liquid-a:#84964e;--liquid-b:#c4c98a;--liquid-c:#f7edcf;--scene-accent:#aab46a}
+.recipe-scene.tone-chocolate{--liquid-a:#48251c;--liquid-b:#936047;--liquid-c:#d9b99b;--scene-accent:#82503a}
+.recipe-scene.tone-caramel{--liquid-a:#995326;--liquid-b:#d99a4d;--liquid-c:#f5dfb7;--scene-accent:#c7833e}
+.recipe-scene.tone-coconut{--liquid-a:#b7a27b;--liquid-b:#e9d8b5;--liquid-c:#fff8e9;--scene-accent:#d5c39e}
+.recipe-scene.tone-citrus{--liquid-a:#d4a52b;--liquid-b:#f4d86b;--liquid-c:#fff3b7;--scene-accent:#dfb43b}
+.recipe-scene.tone-watermelon{--liquid-a:#d94e59;--liquid-b:#f18a78;--liquid-c:#ffe0c4;--scene-accent:#e76c70}
+.scene-countertop{position:absolute;left:8%;right:8%;bottom:23px;height:13px;border-radius:50%;background:rgba(92,54,30,.13);filter:blur(7px)}
+.scene-glow{position:absolute;width:210px;height:180px;left:50%;top:24px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(244,196,151,.18) 65%,transparent 72%)}
+.scene-cup{position:absolute;z-index:3;left:50%;bottom:32px;width:112px;height:158px;transform:translateX(-50%) rotateX(-3deg);transform-style:preserve-3d;filter:drop-shadow(10px 12px 7px rgba(73,43,23,.15))}
+.scene-cup:before{content:"";position:absolute;inset:8px 5px 2px;border:3px solid rgba(255,255,255,.88);border-top:0;border-radius:7px 7px 27px 27px;clip-path:polygon(0 0,100% 0,84% 100%,16% 100%);background:linear-gradient(90deg,rgba(255,255,255,.36),rgba(255,255,255,.04) 35%,rgba(255,255,255,.35) 78%,rgba(255,255,255,.12));box-shadow:inset 8px 0 12px rgba(255,255,255,.22),inset -8px 0 10px rgba(112,75,48,.08)}
+.scene-cup-rim{position:absolute;z-index:8;left:2px;right:2px;top:5px;height:12px;border:3px solid rgba(255,255,255,.94);border-radius:50%;background:rgba(255,255,255,.18);box-shadow:0 3px 5px rgba(77,49,29,.12)}
+.scene-liquid{position:absolute;z-index:2;left:13px;right:13px;bottom:9px;height:0;opacity:.96;border-radius:3px 3px 22px 22px;clip-path:polygon(0 0,100% 0,84% 100%,16% 100%);transform:translateZ(2px)}
+.scene-liquid-one{background:linear-gradient(90deg,var(--liquid-a),var(--liquid-b) 50%,var(--liquid-a));animation:sceneFillOne 1.1s .25s cubic-bezier(.2,.75,.25,1) forwards}
+.scene-liquid-two{background:linear-gradient(90deg,var(--liquid-c),#fff8e8 48%,var(--liquid-b));animation:sceneFillTwo 1.05s 1.25s cubic-bezier(.2,.75,.25,1) forwards}
+.scene-liquid-three{background:linear-gradient(90deg,var(--liquid-b),var(--liquid-a) 52%,var(--liquid-b));animation:sceneFillThree .85s 2.25s cubic-bezier(.2,.75,.25,1) forwards}
+.scene-pour-stream{position:absolute;z-index:5;left:calc(50% - 3px);top:17px;width:6px;height:0;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.2),var(--scene-accent),rgba(255,255,255,.65));filter:drop-shadow(0 0 4px rgba(205,139,79,.45));animation:scenePour .75s .35s ease-in forwards}
+.scene-pour-drop{position:absolute;z-index:6;left:calc(50% - 5px);top:calc(100% - 194px);width:10px;height:15px;border-radius:60% 60% 70% 70%;background:var(--scene-accent);opacity:0;animation:sceneDrop .7s .85s ease-in forwards}
+.scene-ice{position:absolute;z-index:7;left:26px;right:26px;bottom:17px;height:85px;opacity:0;animation:sceneIce .6s 1.9s ease-out forwards}
+.scene-ice i{position:absolute;width:22px;height:25px;border:1px solid rgba(255,255,255,.85);border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(183,222,230,.24));box-shadow:inset 3px 2px 4px #fff;transform:rotate(17deg)}
+.scene-ice i:nth-child(1){left:5px;bottom:5px}.scene-ice i:nth-child(2){right:4px;bottom:24px;transform:rotate(-13deg)}.scene-ice i:nth-child(3){left:38px;bottom:42px;transform:rotate(8deg)}
+.scene-topping{position:absolute;z-index:9;left:25px;right:25px;top:2px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 50% 25%,#fff 0 20%,#f1dfc9 62%,#d5b18d 100%);opacity:0;transform:translateY(12px) scale(.75);animation:sceneTop .65s 2.75s cubic-bezier(.2,.8,.2,1) forwards}
+.scene-straw{position:absolute;z-index:10;right:28px;top:-12px;width:7px;height:96px;border-radius:8px;background:linear-gradient(90deg,#fff,#d77b56 50%,#fff);transform:rotate(9deg) translateY(20px);opacity:0;animation:sceneStraw .55s 2.8s ease-out forwards}
+.scene-cup-shine{position:absolute;z-index:11;top:26px;bottom:18px;left:21px;width:13px;border-radius:50%;background:linear-gradient(90deg,rgba(255,255,255,.5),rgba(255,255,255,0));filter:blur(2px);pointer-events:none}
+.scene-cup-base{position:absolute;z-index:8;bottom:1px;left:36px;right:36px;height:8px;border-radius:50%;border-bottom:3px solid rgba(255,255,255,.9)}
+.scene-splash{position:absolute;z-index:4;left:50%;top:116px;width:9px;height:9px;border-radius:50%;background:var(--scene-accent);opacity:0}
+.splash-one{animation:sceneSplash .65s 1.05s ease-out}.splash-two{animation:sceneSplash .65s 2.25s ease-out}
+.scene-stage-label{position:absolute;z-index:12;padding:5px 8px;border-radius:99px;background:rgba(255,250,245,.85);font-size:8px;letter-spacing:.08em;font-weight:900;color:#805437;opacity:0;animation:sceneLabel .5s ease forwards}
+.label-one{left:calc(50% - 104px);bottom:74px;animation-delay:.35s}.label-two{right:calc(50% - 112px);top:95px;animation-delay:1.35s}.label-three{left:calc(50% - 106px);top:18px;animation-delay:2.7s}
+.scene-hot .scene-liquid-two,.scene-hot .scene-liquid-three,.scene-tea .scene-liquid-two,.scene-tea .scene-liquid-three{display:none}
+.scene-hot .scene-ice,.scene-hot .scene-straw,.scene-tea .scene-ice,.scene-tea .scene-straw{display:none}
+.scene-frappe .scene-liquid-one,.scene-shake .scene-liquid-one{background:repeating-linear-gradient(135deg,var(--liquid-a),var(--liquid-a) 7px,var(--liquid-b) 8px,var(--liquid-b) 14px)}
+.scene-frappe .scene-ice,.scene-shake .scene-ice{display:none}
+.scene-matcha .scene-liquid-one{background:linear-gradient(90deg,#54763d,#9dbb70 48%,#54763d)}
+.scene-refresher .scene-liquid-one,.scene-juice .scene-liquid-one{background:linear-gradient(180deg,var(--liquid-a),var(--liquid-b) 55%,var(--liquid-c))}
+.scene-can .scene-cup{width:82px;height:144px}.scene-water .scene-cup{width:86px;height:160px}
+.recipe-scene-controls{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:10px;font-size:8px;letter-spacing:.13em;font-weight:900;color:#a27a5a}
+.scene-live-dot{width:7px;height:7px;border-radius:50%;background:#87a75a;box-shadow:0 0 0 4px rgba(135,167,90,.13)}
+.recipe-scene-controls button{margin-left:8px;border:1px solid #e8d2be;border-radius:99px;background:#fffaf5;color:#714628;padding:6px 11px;font:inherit;letter-spacing:0;cursor:pointer}
+.recipe-scene-controls button:hover{background:#f6e2d0}
+@keyframes sceneFillOne{0%{height:0}100%{height:48px}}
+@keyframes sceneFillTwo{0%{height:0}100%{height:42px}}
+@keyframes sceneFillThree{0%{height:0}100%{height:25px}}
+@keyframes scenePour{0%{height:0;opacity:0}15%{opacity:1}100%{height:152px;opacity:1}}
+@keyframes sceneDrop{0%{opacity:0;transform:translateY(-14px) scale(.5)}35%{opacity:1}100%{opacity:0;transform:translateY(35px) scale(.8)}}
+@keyframes sceneIce{0%{opacity:0;transform:translateY(-25px) rotate(-15deg)}70%{opacity:1;transform:translateY(5px) rotate(8deg)}100%{opacity:1;transform:translateY(0) rotate(0)}}
+@keyframes sceneTop{to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes sceneStraw{to{opacity:1;transform:rotate(9deg) translateY(0)}}
+@keyframes sceneSplash{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}35%{opacity:.8}100%{opacity:0;transform:translate(-50%,-50%) scale(5)}}
+@keyframes sceneLabel{to{opacity:1;transform:translateY(-3px)}}
+@media(max-width:620px){.recipe-scene-wrap{padding:14px 10px 10px}.recipe-scene{height:222px}.scene-cup{transform:translateX(-50%) scale(.88);transform-origin:bottom center}.recipe-scene-copy strong{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.recipe-scene *{animation:none!important;opacity:1!important}.scene-liquid{height:80px}.scene-pour-stream,.scene-pour-drop{display:none}}
