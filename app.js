@@ -76,7 +76,7 @@ function renderProducts(){
     const qty=state.selection[p.id]||0;
     return `<article class="product-card"><div class="product-visual"><span class="product-tag">${p.tag}</span>${artMarkup(p)}</div>
       <div class="product-info"><div class="product-category">${p.category.toUpperCase()}</div><div class="product-title-row"><h3 class="product-title">${p.name}</h3><span class="product-price">${money(p.price)} EGP</span></div>
-      <p class="product-description">${p.description}</p><button class="add-button ${qty?"added":""}" data-add="${p.id}" type="button"><span>${qty?"ADDED · "+qty+" SELECTED":"ADD TO YOUR LIST"}</span><span>${qty?"✓":"＋"}</span></button></div></article>`;
+      <p class="product-description">${p.description}</p>${window.RECIPE_CATALOG?.[p.id]?'<button class="recipe-button" data-recipe="'+p.id+'" type="button"><span>HOW IT IS MADE</span><span>⌄</span></button>':""}<button class="add-button ${qty?"added":""}" data-add="${p.id}" type="button"><span>${qty?"ADDED · "+qty+" SELECTED":"ADD TO YOUR LIST"}</span><span>${qty?"✓":"＋"}</span></button></div></article>`;
   }).join(""):'<div class="no-results">No treats found. Try another search or category.</div>';
 }
 
@@ -122,6 +122,22 @@ function renderTotals(){
     <strong class="line-price">${money(p.price*state.selection[p.id])} EGP</strong>
   </div>`).join("");
 }
+
+let activeRecipeId=null;
+function escapeRecipeText(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function openRecipe(id){
+ const r=window.RECIPE_CATALOG?.[id];if(!r)return;activeRecipeId=id;
+ $("#recipeCategory").textContent=r.category;$("#recipeDrinkName").textContent=r.name;$("#recipeNote").textContent=r.note;
+ $("#recipeIngredients").innerHTML=r.ingredients.map(x=>'<li><span>'+escapeRecipeText(x.name)+'</span><b>'+escapeRecipeText(x.amount)+'</b></li>').join("");
+ $("#recipeSteps").innerHTML=r.steps.map((x,i)=>'<li><span class="recipe-step-number">'+(i+1)+'</span><div><strong>'+escapeRecipeText(x.title)+'</strong><p>'+escapeRecipeText(x.detail)+'</p></div></li>').join("");
+ const p=MENU.find(x=>x.id===id);$("#recipeCup").textContent=p?.art==="matcha"?"🍵":p?.art==="berry"?"🍓":p?.art==="soda"?"🍹":p?.art==="coffee"?"☕":"🥤";
+ $("#recipeBackdrop").hidden=false;document.body.style.overflow="hidden";$("#closeRecipe").focus();
+}
+function closeRecipe(){ $("#recipeBackdrop").hidden=true;if(selectionBackdrop.hidden)document.body.style.overflow="";activeRecipeId=null; }
+$("#closeRecipe").addEventListener("click",closeRecipe);
+$("#recipeBackdrop").addEventListener("click",e=>{if(e.target.id==="recipeBackdrop")closeRecipe();});
+$("#recipeAddButton").addEventListener("click",()=>{if(!activeRecipeId)return;state.selection[activeRecipeId]=(state.selection[activeRecipeId]||0)+1;closeRecipe();update();});
+
 function update(){
   renderProducts();
   renderTotals();
@@ -134,6 +150,8 @@ categoryTabs.addEventListener("click",event=>{
   $("#productGrid").scrollIntoView({behavior:"smooth",block:"start"});
 });
 productGrid.addEventListener("click",event=>{
+  const recipeButton=event.target.closest("[data-recipe]");
+  if(recipeButton){openRecipe(recipeButton.dataset.recipe);return;}
   const button=event.target.closest("[data-add]");
   if(!button)return;
   const id=button.dataset.add;
@@ -150,7 +168,7 @@ function closeSelection(){selectionBackdrop.hidden=true;document.body.style.over
 $("#openSelection").addEventListener("click",openSelection);
 $("#closeSelection").addEventListener("click",closeSelection);
 selectionBackdrop.addEventListener("click",event=>{if(event.target===selectionBackdrop)closeSelection();});
-document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!selectionBackdrop.hidden)closeSelection();});
+document.addEventListener("keydown",event=>{if(event.key==="Escape"){if(!$("#recipeBackdrop").hidden)closeRecipe();else if(!selectionBackdrop.hidden)closeSelection();}});
 $("#selectionItems").addEventListener("click",event=>{
   const button=event.target.closest("[data-quantity]");
   if(!button)return;
