@@ -5,7 +5,7 @@
     const n=String(name||"").toLowerCase();
     if(/milk|cream|foam|condensed/.test(n))return {top:"#d8bd98",bottom:"#b58c63",sound:null};
     if(/espresso|coffee|بن|قهوة/.test(n))return {top:"#98603d",bottom:"#422719",sound:"coffee"};
-    if(/matcha|green tea/.test(n))return {top:"#91a85e",bottom:"#536b37",sound:"powder"};
+    if(/matcha|green tea/.test(n))return {top:"#91a85e",bottom:"#536b37",sound:null};
     if(/ice|ثلج/.test(n))return {top:"#c4e5e7",bottom:"#8fc3c9",sound:null};
     if(/syrup|sauce|caramel|chocolate|صوص|سيرب/.test(n))return {top:"#a96b3d",bottom:"#62351f",sound:null};
     if(/strawberry|berry|فراولة|توت/.test(n))return {top:"#ca6673",bottom:"#8b304b",sound:null};
@@ -28,7 +28,6 @@
       coffee:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Espresso_machine.ogg",
       blend:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_blender.webm",
       whisk:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_sounds_recorded_while_cooking.ogg",
-      powder:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Coffee_grinder.ogg"
     };
     let enabled=true,current=null;
     const stop=()=>{if(current){current.pause();current.currentTime=0;current=null;}};
