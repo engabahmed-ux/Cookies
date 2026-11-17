@@ -60,7 +60,9 @@
   function mount(product, recipe) {
     const host=document.querySelector("#recipeScene");
     if(!host)return;
-    const old=host.querySelector(".fluid-canvas");if(old)old.remove();
+    host.__fluidCleanup?.();
+    host.querySelector(".fluid-canvas")?.remove();
+    host.querySelector(".fluid-sound-toggle")?.remove();
     const canvas=document.createElement("canvas");canvas.className="fluid-canvas";canvas.setAttribute("aria-label","Animated drink being poured into a glass");
     host.appendChild(canvas);
     host.classList.add("fluid-active");
@@ -146,7 +148,8 @@
     const onVisibility=()=>{if(document.hidden){paused=true;cancelAnimationFrame(raf);}else if(paused){paused=false;replay();}};
     document.addEventListener("visibilitychange",onVisibility);
     replay();
-    return ()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",onResize);document.removeEventListener("visibilitychange",onVisibility);};
+    host.__fluidCleanup=()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",onResize);document.removeEventListener("visibilitychange",onVisibility);canvas.remove();sound.remove();};
+    return host.__fluidCleanup;
   }
   window.RecipeFluid={mount};
 })();
