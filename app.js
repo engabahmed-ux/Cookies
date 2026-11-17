@@ -217,7 +217,7 @@ function openRecipe(id){
  $("#recipeSteps").innerHTML=r.steps.map((x,i)=>'<li><span class="recipe-step-number">'+(i+1)+'</span><div><strong>'+escapeRecipeText(x.title)+'</strong><p>'+escapeRecipeText(x.detail)+'</p></div></li>').join("");
  const p=product;$("#recipeCup").textContent=p?.art==="matcha"?"🍵":p?.art==="berry"?"🍓":p?.art==="soda"?"🍹":p?.art==="coffee"?"☕":"🥤";
  document.querySelector(".recipe-overview").insertAdjacentHTML("afterend",recipeSceneMarkup(p));
- $("#recipeBackdrop").hidden=false;requestAnimationFrame(()=>replayRecipeScene());document.body.style.overflow="hidden";$("#closeRecipe").focus();
+ $("#recipeBackdrop").hidden=false;replayRecipeScene();document.body.style.overflow="hidden";$("#closeRecipe").focus();
 }
 function closeRecipe(){ $("#recipeBackdrop").hidden=true;if(selectionBackdrop.hidden)document.body.style.overflow="";activeRecipeId=null; }
 $("#closeRecipe").addEventListener("click",closeRecipe);
