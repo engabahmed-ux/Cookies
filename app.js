@@ -177,13 +177,13 @@ function escapeRecipeText(value){return String(value).replace(/[&<>"']/g,c=>({"&
 
 function recipeSceneType(p){
  const n=p.name.toLowerCase(),c=p.category;
- if(c==="Matcha")return "matcha";
- if(c==="Frappe Coffee")return "frappe";
- if(c==="Milk Shake")return "shake";
- if(c==="Tropical Refresher")return "refresher";
- if(c==="Soft Drinks & Juices")return n==="redbull"?"can":n==="water"?"water":"juice";
+ if(c==="Matcha")return "whisk";
+ if(c==="Frappe Coffee"||c==="Milk Shake")return "blend";
+ if(c==="Tropical Refresher")return "fruit";
+ if(c==="Soft Drinks & Juices")return n==="water"||n==="redbull"?"ready":"juice";
  if(c==="Iced Coffee")return "iced";
- if(c==="Coffee")return n.includes("tea")?"tea":"hot";
+ if(c==="Milk Way")return "milk";
+ if(c==="Coffee")return n.includes("tea")?"tea":n.includes("espresso")?"espresso":"hot";
  return "hot";
 }
 function recipeSceneMarkup(p){
@@ -199,12 +199,15 @@ function recipeSceneMarkup(p){
  else if(n.includes("coconut")||n.includes("pina"))tone="coconut";
  else if(n.includes("lemon")||n.includes("orange"))tone="citrus";
  else if(n.includes("watermelon"))tone="watermelon";
- return '<section class="recipe-scene-wrap" aria-label="Animated drink preparation"><div class="recipe-scene-copy"><span class="scene-kicker">MADE FRESH, JUST FOR YOU</span><strong>Watch your drink come to life</strong><small>Ingredients pour in and build the finished drink.</small></div><div class="recipe-scene scene-'+type+' tone-'+tone+'" id="recipeScene"><div class="scene-countertop"></div><div class="scene-glow"></div><div class="scene-pour-stream"></div><div class="scene-pour-drop"></div><div class="scene-cup"><div class="scene-cup-rim"></div><div class="scene-liquid scene-liquid-one"></div><div class="scene-liquid scene-liquid-two"></div><div class="scene-liquid scene-liquid-three"></div><div class="scene-ice"><i></i><i></i><i></i></div><div class="scene-topping"></div><div class="scene-straw"></div><div class="scene-cup-shine"></div><div class="scene-cup-base"></div></div><div class="scene-splash splash-one"></div><div class="scene-splash splash-two"></div><span class="scene-stage-label label-one">01 · BASE</span><span class="scene-stage-label label-two">02 · POUR</span><span class="scene-stage-label label-three">03 · FINISH</span></div><div class="recipe-scene-controls"><span class="scene-live-dot"></span><span>PREPARATION ANIMATION</span><button type="button" id="replayRecipeScene">↻ Replay</button></div></section>';
+ const title=type==="blend"?"Blending a thick, creamy shake":type==="whisk"?"Whisking fresh matcha":type==="fruit"?"Building a fresh fruit refresher":type==="ready"?"Ready to enjoy":type==="espresso"||type==="hot"||type==="tea"?"Brewing your cup": "Layering your drink";
+ const stages=type==="blend"?["01 · BLEND","02 · TEXTURE","03 · POUR"]:type==="whisk"?["01 · SIFT","02 · WHISK","03 · POUR"]:type==="ready"?["01 · CHILL","02 · PREPARE","03 · SERVE"]:["01 · BASE","02 · LAYER","03 · FINISH"];
+ return '<section class="recipe-scene-wrap" aria-label="Drink preparation animation"><div class="recipe-scene-copy"><span class="scene-kicker">MADE FRESH, JUST FOR YOU</span><strong>'+title+'</strong><small>Each drink gets its own preparation style.</small></div><div class="recipe-scene scene-'+type+' tone-'+tone+'" id="recipeScene"><div class="scene-countertop"></div><div class="scene-glow"></div><div class="scene-steam"></div><div class="scene-tool"><span></span></div><div class="scene-pour-stream"></div><div class="scene-pour-drop"></div><div class="scene-cup"><div class="scene-cup-rim"></div><div class="scene-liquid scene-liquid-one"></div><div class="scene-liquid scene-liquid-two"></div><div class="scene-liquid scene-liquid-three"></div><div class="scene-ice"><i></i><i></i><i></i></div><div class="scene-fruit-bits"><i></i><i></i><i></i></div><div class="scene-topping"></div><div class="scene-straw"></div><div class="scene-cup-shine"></div><div class="scene-cup-base"></div></div><div class="scene-splash splash-one"></div><div class="scene-splash splash-two"></div><span class="scene-stage-label label-one">'+stages[0]+'</span><span class="scene-stage-label label-two">'+stages[1]+'</span><span class="scene-stage-label label-three">'+stages[2]+'</span></div><div class="recipe-scene-controls"><span class="scene-live-dot"></span><span>PREPARATION ANIMATION</span><button type="button" id="replayRecipeScene">↻ Replay</button></div></section>';
 }
 function replayRecipeScene(){
  const scene=$("#recipeScene");if(!scene)return;
  const fresh=scene.cloneNode(true);scene.replaceWith(fresh);void fresh.offsetWidth;
 }
+
 function openRecipe(id){
  const r=window.RECIPE_CATALOG?.[id];if(!r)return;activeRecipeId=id;
  const product=MENU.find(x=>x.id===id);document.querySelector(".recipe-scene-wrap")?.remove();
