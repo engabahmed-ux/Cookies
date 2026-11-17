@@ -26,34 +26,38 @@
     return ordered.slice(0,5);
   };
   function makeAudio() {
-    let ctx=null, master=null, enabled=true;
-    const get=()=>{if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;ctx=new AC();master=ctx.createGain();master.gain.value=.22;master.connect(ctx.destination);}if(ctx.state==="suspended")ctx.resume();return ctx;};
-    const noise=(duration,frequency,filterType="lowpass",volume=.2)=>{
-      const c=get();if(!c)return;
-      const length=Math.max(1,Math.floor(c.sampleRate*duration)),buffer=c.createBuffer(1,length,c.sampleRate),data=buffer.getChannelData(0);
-      for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
-      const src=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();
-      src.buffer=buffer;filter.type=filterType;filter.frequency.value=frequency;
-      gain.gain.setValueAtTime(.0001,c.currentTime);gain.gain.exponentialRampToValueAtTime(volume,c.currentTime+.035);gain.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);
-      src.connect(filter);filter.connect(gain);gain.connect(master);src.start();src.stop(c.currentTime+duration);
+    const sources = {
+      coffee: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Espresso_machine.ogg",
+      milk: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Drinking_a_glass_of_wat.ogg",
+      water: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Water_flowing_pouring_trickling.ogg",
+      ice: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Binging_glass.ogg",
+      syrup: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Water_flowing_pouring_trickling.ogg",
+      fruit: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Drinking_a_glass_of_wat.ogg",
+      blend: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_blender.webm",
+      whisk: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kitchen_sounds_recorded_while_cooking.ogg",
+      powder: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Coffee_grinder.ogg",
+      thick: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Water_flowing_pouring_trickling.ogg",
+      pour: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Drinking_a_glass_of_wat.ogg"
     };
-    const tone=(frequency,duration,volume=.07,type="sine")=>{
-      const c=get();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(frequency,c.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(40,frequency*.72),c.currentTime+duration);g.gain.setValueAtTime(volume,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);o.connect(g);g.connect(master);o.start();o.stop(c.currentTime+duration);
-    };
+    const limits = {coffee:4.8,milk:3.4,water:3.2,ice:1.8,syrup:2.5,fruit:2.7,blend:8.5,whisk:3.5,powder:2.2,thick:2.8,pour:3};
+    let enabled=true,active=[];
     return {
-      play(kind){if(!enabled)return;get();if(!ctx)return;
-        if(kind==="ice"){noise(.24,2400,"highpass",.38);tone(1250,.12,.035,"triangle");}
-        else if(kind==="milk"){noise(.75,720,"lowpass",.22);tone(180,.5,.025);}
-        else if(kind==="coffee"){noise(.62,1150,"lowpass",.28);tone(260,.35,.035);}
-        else if(kind==="syrup"){noise(.85,420,"lowpass",.18);tone(115,.6,.025);}
-        else if(kind==="fruit"){noise(.35,1800,"bandpass",.25);tone(520,.18,.025,"triangle");}
-        else if(kind==="powder"||kind==="whisk"){noise(.6,3200,"highpass",.13);tone(720,.42,.025,"triangle");}
-        else if(kind==="blend"){noise(1.15,850,"lowpass",.24);tone(95,1,.05,"sawtooth");}
-        else if(kind==="thick"){noise(.9,560,"lowpass",.2);}
-        else if(kind==="water"){noise(.65,1500,"lowpass",.22);}
-        else {noise(.55,1000,"lowpass",.2);}
+      play(kind) {
+        if(!enabled)return;
+        const url=sources[kind]||sources.pour;
+        const audio=new Audio(url);
+        audio.preload="auto";
+        audio.volume=kind==="blend"?.52:.72;
+        audio.playbackRate=kind==="syrup"?.78:kind==="ice"?1.08:1;
+        const max=limits[kind]||3;
+        const stopAt=()=>{if(audio.currentTime>=max){audio.pause();audio.removeEventListener("timeupdate",stopAt);}};
+        audio.addEventListener("timeupdate",stopAt);
+        active.push(audio);
+        audio.addEventListener("ended",()=>{active=active.filter(x=>x!==audio);});
+        const result=audio.play();
+        if(result&&typeof result.catch==="function")result.catch(()=>{});
       },
-      toggle(){enabled=!enabled;return enabled;},
+      toggle(){enabled=!enabled;if(!enabled){active.forEach(a=>a.pause());active=[];}return enabled;},
       get enabled(){return enabled;}
     };
   }
@@ -81,7 +85,7 @@
     }
     function surfaceY(level){return cup.bottom-(cup.bottom-cup.top-9)*level;}
     function addRipple(y,amount){particles.push({x:cup.cx(),y,age:0,life:.9,r:4+amount*9,kind:"ripple"});for(let i=0;i<8;i++)particles.push({x:cup.cx()+(Math.random()-.5)*cup.half,y:y-2,age:0,life:.45+Math.random()*.35,r:1+Math.random()*2,kind:"bubble",vx:(Math.random()-.5)*32,vy:-8-Math.random()*24});}
-    function drawLiquid(level,active,elapsed){
+    function drawLiquid(level,active,elapsed,stageIndex){
       const x=cup.cx(),y=surfaceY(level),b=cup.bottom,hw=cup.half;
       ctx.save();roundedCupPath();ctx.clip();
       const layerCount=Math.max(1,Math.min(plan.length,Math.ceil(level*total)));
@@ -134,7 +138,7 @@
       if(stageIndex!==lastStage){lastStage=stageIndex;audio.play(stage.sound);addRipple(surfaceY(Math.max(.02,stage.from)),stageIndex);}
       ctx.clearRect(0,0,w,h);
       ctx.fillStyle="rgba(255,255,255,.035)";ctx.fillRect(0,0,w,h);
-      drawLiquid(level,stageProgress<.82,elapsed);
+      drawLiquid(level,stageProgress<.82,elapsed,stageIndex);
       if(stageProgress<.82)drawStream(level,stage,elapsed,stageProgress);
       drawParticles(1/60);drawGlass();
       if(progress<1)raf=requestAnimationFrame(frame);
