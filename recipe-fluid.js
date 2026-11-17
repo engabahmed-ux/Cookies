@@ -144,7 +144,7 @@
       if(progress<1)raf=requestAnimationFrame(frame);
       else{drawParticles(1/60);const label=host.querySelector(".scene-stage-label.label-three");if(label)label.textContent="READY TO ENJOY";}
     }
-    const replay=()=>{cancelAnimationFrame(raf);start=0;lastStage=-1;particles.length=0;ctx.clearRect(0,0,w,h);raf=requestAnimationFrame(frame);};
+    const replay=()=>{cancelAnimationFrame(raf);start=0;lastStage=0;particles.length=0;ctx.clearRect(0,0,w,h);audio.play(stages[0].sound);raf=requestAnimationFrame(frame);};
     const sound=document.createElement("button");sound.type="button";sound.className="fluid-sound-toggle";sound.textContent="♫ Sound on";sound.setAttribute("aria-pressed","true");
     sound.addEventListener("click",()=>{const on=audio.toggle();sound.textContent=on?"♫ Sound on":"♫ Sound off";sound.setAttribute("aria-pressed",String(on));if(on)audio.play("pour");});
     host.querySelector(".recipe-scene-controls")?.appendChild(sound);
